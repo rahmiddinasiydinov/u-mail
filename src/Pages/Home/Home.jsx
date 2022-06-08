@@ -52,13 +52,13 @@ export const Home = () => {
       setReceived([...receive.reverse()]);
       setSaved([...saved.reverse()]);
     });
-  }, [messageListener]);
+  }, [messageListener, name]);
   useEffect(() => {
     axios(`https://uz-mail.herokuapp.com/reply?id=${currentPartner}`).then((res) => {
       setCommunication(res.data.partner);
       setReplyMessages(res.data.partner?.replies);
     });
-  }, [replyListener]);
+  }, [replyListener, currentPartner]);
 
    useEffect(() => {
       setReplyMessages(communication?.replies);
