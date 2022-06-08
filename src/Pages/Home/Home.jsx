@@ -303,7 +303,7 @@ export const Home = () => {
                   onChange={(e) => {
                     setTitle(e.target.value);
                   }}
-                  placeholder="Username"
+                  placeholder="Title"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
