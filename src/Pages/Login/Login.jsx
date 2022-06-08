@@ -1,22 +1,24 @@
 import "./Login.scss";
 import { io } from "socket.io-client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 
 export const Login = () => {
   const name = useRef();
   const navigate = useNavigate();
-  const socket = io("https://uz-mail.herokuapp.com", {
-    transports: ["websocket"],
+  const socket = io("https://uz-mail.herokuapp.com/", {
   });
-  socket.on("connect", () => {
-  });
-  socket.on("new-user-back", async (data) => {
-    if (data.status === 200) {
-      navigate(`/home/${data?.name}`);
-      window.location.assign(`/home/${data?.name}`);
-    }
-  });
+
+  useEffect(() => {
+     socket.on("connect", () => {});
+     socket.on("new-user-back", async (data) => {
+       if (data.status === 200) {
+         navigate(`/home/${data?.name}`);
+        //  window.location.assign(`/home/${data?.name}`);
+       }
+     });
+  }, [socket])
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const value = name.current?.value.toLowerCase();

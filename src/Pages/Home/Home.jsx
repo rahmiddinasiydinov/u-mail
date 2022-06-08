@@ -30,9 +30,7 @@ export const Home = () => {
   const input = useRef();
   const [reply, setReply] = useState();
 
-  const socket = io("https://uz-mail.herokuapp.com", {
-    transports: ["websocket"],
-  });
+  const socket = io("https://uz-mail.herokuapp.com/");
   useEffect(() => {
     axios.get("https://uz-mail.herokuapp.com/user").then((res) => {
       setUsers(res.data);
@@ -61,10 +59,11 @@ export const Home = () => {
       setReplyMessages(res.data.partner?.replies);
     });
   }, [replyListener]);
+
    useEffect(() => {
     console.log(communication);
       setReplyMessages(communication?.replies);
-   }, [currentPartner]);
+   }, [currentPartner, communication]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,16 +74,19 @@ export const Home = () => {
       receivers: multiSelections,
     });
   };
-  socket.on("new-user", (data) => {
-    setUserListener(!userListener);
-  });
-  socket.on("new-message", (data) => {
-    setMessageListener(!messageListener);
-  });
-  socket.on("new-reply", (data) => {
-    setReplyListener(!replyListener);
-  });
+  useEffect(() => {
+    socket.on("new-user", (data) => {
+      setUserListener(!userListener);
+    });
+    socket.on("new-message", (data) => {
+      setMessageListener(!messageListener);
+    });
+    socket.on("new-reply", (data) => {
+      setReplyListener(!replyListener);
+    });
 
+  }, [socket])
+  
   const handleReply = () => {
 
     socket.emit("new-reply", {
@@ -152,7 +154,7 @@ export const Home = () => {
               <img className="header__person--img" src={personImg} alt="img" />
               <span className="header__person--text">{name}</span>
             </div>
-            <Link type="button" to="/" class="btn btn-outline-primary">
+            <Link type="button" to="/" className="btn btn-outline-primary">
               Log out
             </Link>
           </div>
@@ -363,7 +365,7 @@ export const Home = () => {
                       modal?.current.classList.add("modal__active");
                     }}
                     type="button"
-                    class="chat__reply--btn"
+                    className="chat__reply--btn"
                   >
                     Reply
                   </button>
