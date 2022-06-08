@@ -61,7 +61,6 @@ export const Home = () => {
   }, [replyListener]);
 
    useEffect(() => {
-    console.log(communication);
       setReplyMessages(communication?.replies);
    }, [currentPartner, communication]);
 
