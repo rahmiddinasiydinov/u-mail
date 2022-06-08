@@ -14,7 +14,7 @@ export const Login = () => {
      socket.on("new-user-back", async (data) => {
        if (data.status === 200) {
          navigate(`/home/${data?.name}`);
-         window.location.assign(`/home/${data?.name}`);
+        //  window.location.assign(`/home/${data?.name}`);
        }
      });
   }, [socket])
